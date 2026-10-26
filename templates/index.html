@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusGig | MUJ Campus Services</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7ff;
+            color: #172033;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: white;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            color: #5546e8;
+        }
+
+        .logo span {
+            color: #172033;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #5546e8;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 23px;
+            background: #5546e8;
+            color: white !important;
+            border-radius: 9px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #4032c8;
+            transform: translateY(-2px);
+        }
+
+        .btn-light {
+            background: white;
+            color: #5546e8 !important;
+            border: 1px solid #dddafa;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 45px;
+            padding: 85px 8%;
+            background: linear-gradient(125deg, #eeedff, #f8f9ff);
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e0ddff;
+            color: #4938cc;
+            padding: 9px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 23px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.12;
+            margin-bottom: 22px;
+            letter-spacing: -1.5px;
+        }
+
+        h1 span {
+            color: #5546e8;
+        }
+
+        .hero p {
+            color: #647084;
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .hero-card {
+            width: 340px;
+            min-width: 280px;
+            background: white;
+            padding: 30px;
+            border-radius: 22px;
+            box-shadow: 0 20px 55px rgba(60,50,150,0.13);
+        }
+
+        .hero-card h3 {
+            font-size: 22px;
+            margin: 14px 0 10px;
+        }
+
+        .hero-card p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .service-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eeeeF5;
+        }
+
+        .service-row:last-child {
+            border-bottom: none;
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            background: #f0efff;
+            border-radius: 13px;
+            font-size: 23px;
+        }
+
+        .service-row strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .service-row small {
+            color: #778094;
+        }
+
+        section {
+            padding: 75px 8%;
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 42px;
+        }
+
+        .section-heading h2 {
+            font-size: 35px;
+            margin-bottom: 13px;
+        }
+
+        .section-heading p {
+            color: #6d778a;
+            line-height: 1.7;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border: 1px solid #eeeef8;
+            border-radius: 18px;
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(30,30,80,0.07);
+        }
+
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+            display: grid;
+            place-items: center;
+            background: #eeedff;
+            border-radius: 15px;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        .feature-card p {
+            color: #6d778a;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .how-it-works {
+            background: white;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #5546e8;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .steps h3 {
+            margin-bottom: 10px;
+        }
+
+        .steps p {
+            color: #6d778a;
+            line-height: 1.7;
+        }
+
+        .cta {
+            text-align: center;
+            background: linear-gradient(120deg, #5546e8, #796cf2);
+            color: white;
+            padding: 65px 8%;
+        }
+
+        .cta h2 {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            line-height: 1.7;
+            margin-bottom: 27px;
+            color: #eeedff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 8%;
+            color: #778094;
+            font-size: 14px;
+        }
+
+        @media (max-width: 850px) {
+            .hero {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-top: 60px;
+            }
+
+            .hero-card {
+                width: 100%;
+            }
+
+            .features,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            nav {
+                padding: 18px 5%;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .logo {
+                font-size: 23px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                font-size: 13px;
+            }
+
+            .hero,
+            section {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .section-heading h2,
+            .cta h2 {
+                font-size: 29px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a class="logo" href="{{ url_for('index') }}">
+            Campus<span>Gig</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a class="btn" href="{{ url_for('signup') }}">Get Started</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="hero">
+            <div class="hero-content">
+                <div class="tag">🎓 Built for the MUJ student community</div>
+
+                <h1>
+                    Your Campus.<br>
+                    Your Skills.<br>
+                    <span>Your Opportunities.</span>
+                </h1>
+
+                <p>
+                    Welcome to CampusGig — a campus service platform where
+                    students can offer their skills, discover helpful services,
+                    connect with fellow students, and find opportunities within
+                    the Manipal University Jaipur community.
+                </p>
+
+                <div class="hero-buttons">
+                    <a class="btn" href="{{ url_for('signup') }}">
+                        Join CampusGig →
+                    </a>
+
+                    <a class="btn btn-light" href="{{ url_for('login') }}">
+                        Explore Your Account
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="tag">CAMPUS SERVICES</div>
+                <h3>Everything students need, in one place.</h3>
+                <p>
+                    Find support and share your skills with your campus community.
+                </p>
+
+                <div class="service-row">
+                    <div class="service-icon">💻</div>
+                    <div>
+                        <strong>Tech & Coding</strong>
+                        <small>Programming and technical help</small>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-icon">📚</div>
+                    <div>
+                        <strong>Academic Support</strong>
+                        <small>Notes, tutoring and study help</small>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-icon">🎨</div>
+                    <div>
+                        <strong>Creative Services</strong>
+                        <small>Design, editing and presentations</small>
+                    </div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-icon">🤝</div>
+                    <div>
+                        <strong>Student Community</strong>
+                        <small>Connect and collaborate</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="features">
+            <div class="section-heading">
+                <h2>Why CampusGig?</h2>
+                <p>
+                    A simple way to turn student skills into useful services
+                    and make everyday campus life easier.
+                </p>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Offer Your Skills</h3>
+                    <p>
+                        Create a service listing, describe what you offer,
+                        set your price, and connect with interested students.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔎</div>
+                    <h3>Discover Services</h3>
+                    <p>
+                        Browse campus services and find fellow students
+                        who can help with your academic or everyday needs.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Manage Requests</h3>
+                    <p>
+                        Submit service requests and keep track of their
+                        status through your personal dashboard.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works" id="how-it-works">
+            <div class="section-heading">
+                <h2>Get Started in 3 Steps</h2>
+                <p>
+                    Join the student community and start using CampusGig.
+                </p>
+            </div>
+
+            <div class="steps">
+                <div>
+                    <div class="step-number">1</div>
+                    <h3>Create Your Account</h3>
+                    <p>Sign up to access the CampusGig platform.</p>
+                </div>
+
+                <div>
+                    <div class="step-number">2</div>
+                    <h3>Explore or Offer</h3>
+                    <p>Find a service or list your own skills.</p>
+                </div>
+
+                <div>
+                    <div class="step-number">3</div>
+                    <h3>Connect on Campus</h3>
+                    <p>Send requests and manage your campus services.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="cta">
+            <h2>Ready to get started?</h2>
+            <p>
+                Be part of a smarter, more connected campus community.
+            </p>
+
+            <a class="btn btn-light" href="{{ url_for('signup') }}">
+                Create Your Account →
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 CampusGig · Manipal University Jaipur (MUJ)</p>
+        <p style="margin-top: 8px;">
+            Built to connect skills, services and students.
+        </p>
+    </footer>
+
+</body>
+</html>

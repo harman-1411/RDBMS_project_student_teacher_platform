@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CampusGig | MUJ{% endblock %}</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7ff;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding: 18px 6%;
+            background: #ffffff;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            color: #5546e8;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #172033;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #4b5568;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #5546e8;
+        }
+
+        .university-badge {
+            display: inline-block;
+            background: #eeedff;
+            color: #5546e8;
+            padding: 9px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .logout-link {
+            color: #d14343 !important;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 6%;
+        }
+
+        .flash-container {
+            max-width: 1400px;
+            margin: 18px auto 0;
+            padding: 0 6%;
+        }
+
+        .flash-message {
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .flash-success {
+            background: #e7f8ed;
+            color: #17663a;
+        }
+
+        .flash-error,
+        .flash-danger {
+            background: #fff0ee;
+            color: #a52a22;
+        }
+
+        .flash-info {
+            background: #eaf3ff;
+            color: #24569b;
+        }
+
+        footer {
+            margin-top: 45px;
+            padding: 24px 6%;
+            text-align: center;
+            color: #7b8496;
+            background: #ffffff;
+            border-top: 1px solid #eceef5;
+            font-size: 13px;
+        }
+
+        @media (max-width: 760px) {
+            nav {
+                padding: 18px 5%;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .page-container {
+                padding: 24px 5%;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+    <nav>
+        <a class="logo" href="{{ url_for('index') }}">
+            Campus<span>Gig</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('explore_services') }}">Explore Services</a>
+                <a href="{{ url_for('my_requests') }}">My Enquiries</a>
+                <a href="{{ url_for('add_service') }}">Add Service</a>
+
+                <span class="university-badge">🎓 MUJ</span>
+
+                <a class="logout-link" href="{{ url_for('logout') }}">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="page-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2026 CampusGig | Manipal University Jaipur (MUJ)</p>
+        <p style="margin-top: 7px;">
+            Connecting student skills with campus opportunities.
+        </p>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

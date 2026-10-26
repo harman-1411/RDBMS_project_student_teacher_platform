@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Services | CampusGig</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fc;
+            color: #243047;
+        }
+        nav {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px #0000000d;
+        }
+        .logo { font-size: 25px; font-weight: bold; color: #2459d3; }
+        nav a { margin-left: 18px; text-decoration: none; color: #334155; }
+        .container { max-width: 1100px; margin: 35px auto; padding: 0 20px; }
+        h1 { margin-bottom: 8px; }
+        .subtitle { color: #64748b; margin-bottom: 25px; }
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px #1e293b0c;
+        }
+        .category { color: #2459d3; font-size: 13px; font-weight: bold; }
+        .price { font-size: 23px; font-weight: bold; margin: 15px 0; }
+        .description { color: #64748b; line-height: 1.6; }
+        button {
+            background: #2459d3;
+            color: white;
+            border: 0;
+            border-radius: 9px;
+            padding: 12px 17px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 15px;
+        }
+        button:hover { background: #1745ae; }
+        .empty {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            text-align: center;
+        }
+        .back { display: inline-block; margin-bottom: 20px; color: #2459d3; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo">CampusGig</div>
+    <div>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('my_requests') }}">My Requests</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <a class="back" href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+    <h1>Discover Campus Services</h1>
+    <p class="subtitle">Find skills and services offered by your fellow MUJ students.</p>
+
+    {% if services %}
+    <div class="services">
+        {% for service in services %}
+        <div class="card">
+            <div class="category">{{ service.category }}</div>
+            <h2>{{ service.title }}</h2>
+            <p class="description">{{ service.description }}</p>
+            <p>Offered by: {{ service.provider_name }}</p>
+            <div class="price">₹{{ service.price }}</div>
+
+            <form method="POST"
+                  action="{{ url_for('request_service', service_id=service.service_id) }}">
+                <button type="submit">Request This Service</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">
+        <h3>No services available yet</h3>
+        <p>Be the first to offer a service to your campus community!</p>
+        <a href="{{ url_for('add_service') }}">Offer a Service</a>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>

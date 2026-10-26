@@ -1,0 +1,725 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusGig | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f7fc;
+            color: #18233d;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e8edf5;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .brand { font-size: 25px; font-weight: 800; color: #1769e0; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 17px;
+            font-size: 13px;
+            color: #536078;
+        }
+
+        .nav-links a:hover { color: #1769e0; }
+
+        .profile {
+            background: #edf4ff;
+            padding: 9px 13px;
+            border-radius: 25px;
+            color: #1859bd;
+            font-weight: 700;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 35px auto;
+        }
+
+        .welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: #1769e0;
+            background: #e7f0ff;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .welcome h1 {
+            font-size: clamp(27px, 4vw, 38px);
+            margin-bottom: 9px;
+            letter-spacing: -1px;
+        }
+
+        .welcome p, .section-heading p {
+            color: #77839a;
+            line-height: 1.7;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary { background: #1769e0; color: white; }
+        .btn-primary:hover { background: #1054ba; }
+        .btn-light { background: white; color: #1769e0; border: 1px solid #dce7f8; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e9eef6;
+            border-radius: 18px;
+            padding: 23px;
+            box-shadow: 0 5px 20px rgba(22,45,85,.035);
+        }
+
+        .stat-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 13px;
+            background: #e9f2ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 21px;
+            margin-bottom: 17px;
+        }
+
+        .stat-card h2 { font-size: 28px; margin-bottom: 6px; overflow-wrap: anywhere; }
+        .stat-card p { font-size: 13px; color: #7a859a; }
+
+        .panel {
+            background: white;
+            border: 1px solid #e9eef6;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(22,45,85,.035);
+            min-width: 0;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 { font-size: 21px; }
+        .view-link { color: #1769e0; font-weight: 700; font-size: 13px; }
+
+        .chart-panel { margin-bottom: 25px; }
+
+        .chart-layout {
+            display: grid;
+            grid-template-columns: minmax(220px, 1fr) minmax(200px, 1fr);
+            align-items: center;
+            gap: 30px;
+        }
+
+        .chart-wrap { width: 100%; max-width: 300px; margin: auto; }
+
+        .legend-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0f6;
+            font-size: 13px;
+        }
+
+        .legend-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        .legend-dot {
+            width: 11px;
+            height: 11px;
+            min-width: 11px;
+            border-radius: 50%;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(250px, .8fr);
+            gap: 25px;
+            align-items: start;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .service-card {
+            border: 1px solid #e7edf6;
+            border-radius: 15px;
+            padding: 20px;
+            transition: .2s;
+            min-width: 0;
+        }
+
+        .service-card:hover {
+            border-color: #b8d1ff;
+            box-shadow: 0 8px 24px rgba(30,85,160,.08);
+            transform: translateY(-2px);
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: #edf4ff;
+            color: #1769e0;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .service-card h3 {
+            font-size: 17px;
+            line-height: 1.45;
+            margin-bottom: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        .description {
+            color: #77839a;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            overflow-wrap: anywhere;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 17px;
+            font-size: 12px;
+            color: #7a859a;
+        }
+
+        .price { color: #172b4d; font-size: 20px; font-weight: 800; }
+        .enquiry-form button { width: 100%; }
+
+        .quick-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 1px solid #edf0f6;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .quick-action:hover { background: #f5f8ff; border-color: #d6e5ff; }
+
+        .action-icon {
+            width: 37px;
+            height: 37px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #edf4ff;
+        }
+
+        .promo {
+            margin-top: 22px;
+            background: linear-gradient(135deg,#1769e0,#4939c9);
+            color: white;
+            border-radius: 17px;
+            padding: 24px;
+        }
+
+        .promo h3 { font-size: 19px; margin-bottom: 10px; }
+
+        .promo p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #e0eaff;
+            margin-bottom: 20px;
+        }
+
+        .promo .btn { width: 100%; background: white; color: #1769e0; }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px 15px;
+            color: #77839a;
+            line-height: 1.8;
+            grid-column: 1 / -1;
+        }
+
+        .flash {
+            padding: 13px 16px;
+            background: #e7f5ec;
+            color: #176c3a;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .flash.danger { background: #ffeded; color: #a12626; }
+        .flash.warning { background: #fff5dc; color: #815600; }
+
+        footer { text-align: center; padding: 30px 15px; color: #8a94a8; font-size: 13px; }
+
+        @media (max-width: 1050px) {
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 700px) {
+            .navbar { padding: 17px 5%; }
+            .nav-links { gap: 12px; }
+            .container { width: 92%; margin-top: 25px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .chart-layout { grid-template-columns: 1fr; }
+            .panel { padding: 18px; }
+            .welcome .btn { width: 100%; }
+        }
+
+        @media (max-width: 420px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="{{ url_for('index') }}" class="brand">
+        CampusGig<span style="color:#18233d;">.</span>
+    </a>
+
+    <div class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('explore_services') }}">Explore Services</a>
+        <a href="{{ url_for('my_requests') }}">My Enquiries</a>
+        <a href="{{ url_for('add_service') }}">Add Service</a>
+
+        <span class="profile">
+            👤 {{ session.get('name', 'Campus Member') }}
+        </span>
+
+        <a href="{{ url_for('logout') }}">Logout ↗</a>
+    </div>
+</nav>
+
+<main class="container">
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- WELCOME -->
+    <section class="welcome">
+        <div>
+            <span class="eyebrow">YOUR CAMPUS · YOUR OPPORTUNITIES</span>
+
+            <h1>
+                Welcome, {{ session.get('name', 'Campus Member') }}! 👋
+            </h1>
+
+            <p>
+                Discover skills, offer services, and connect with your campus community.
+            </p>
+            <p style="margin-top:8px;color:#1769e0;font-weight:600;">
+                🎓 Manipal University Jaipur · MUJ
+            </p>
+        </div>
+
+        <a href="{{ url_for('add_service') }}" class="btn btn-primary">
+            + Add a Service
+        </a>
+    </section>
+
+    <!-- DASHBOARD STATISTICS -->
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon">🛠️</div>
+            <h2>{{ all_services_count|default(services|length) }}</h2>
+            <p>Available Services</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">✨</div>
+            <h2>{{ my_services_count|default(0) }}</h2>
+            <p>Services You Offer</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📩</div>
+            <h2>{{ my_requests_count|default(0) }}</h2>
+            <p>Enquiries Sent</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📬</div>
+            <h2>{{ received_requests_count|default(0) }}</h2>
+            <p>Enquiries Received</p>
+        </div>
+
+    </section>
+
+    <!-- CIRCULAR CATEGORY CHART -->
+    <section class="panel chart-panel">
+
+        <div class="section-heading">
+            <div>
+                <h2>Service Categories</h2>
+                <p>See how services are distributed across your campus.</p>
+            </div>
+        </div>
+
+        <div class="chart-layout">
+            <div class="chart-wrap">
+                <canvas id="serviceChart"></canvas>
+            </div>
+
+            <div id="categoryLegend">
+                <p style="color:#77839a;font-size:13px;">
+                    Loading category information...
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- SERVICES AND QUICK ACTIONS -->
+    <section class="main-grid">
+
+        <div class="panel">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Explore Campus Services</h2>
+                    <p>Discover talented students and useful services.</p>
+                </div>
+
+                <a href="{{ url_for('explore_services') }}" class="view-link">
+                    View all →
+                </a>
+            </div>
+
+            <div class="services-grid">
+
+                {% for service in services %}
+
+                <article class="service-card">
+
+                    <span class="category-badge">
+                        {{ service.category or 'Other Services' }}
+                    </span>
+
+                    <h3>{{ service.title }}</h3>
+
+                    <p class="description">
+                        {{ service.description or 'Campus service offered by a student.' }}
+                    </p>
+
+                    <div class="service-meta">
+                        <span>👤 {{ service.provider_name or 'Campus member' }}</span>
+
+                        <span class="price">
+                            ₹{{ "%.2f"|format(service.price|float) }}
+                        </span>
+                    </div>
+
+                    {% set owner_id = service.get('provider_id', service.get('student_id', -1)) %}
+
+                    {% if session.get('user_id')|int != owner_id|int %}
+
+                    <form class="enquiry-form"
+                          action="{{ url_for('request_service', service_id=service.service_id) }}"
+                          method="POST">
+
+                        <button type="submit" class="btn btn-primary">
+                            Send Enquiry →
+                        </button>
+                    </form>
+
+                    {% else %}
+
+                    <a href="{{ url_for('add_service') }}"
+                       class="btn btn-light"
+                       style="display:block;">
+                        Add Another Service
+                    </a>
+
+                    {% endif %}
+
+                </article>
+
+                {% else %}
+
+                <div class="empty-state">
+                    <h3>No services available yet</h3>
+                    <p>Be the first to offer a service on CampusGig!</p>
+                    <br>
+                    <a href="{{ url_for('add_service') }}" class="btn btn-primary">
+                        + Add Your First Service
+                    </a>
+                </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <aside>
+
+            <div class="panel">
+                <div class="section-heading">
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Everything you need in one place.</p>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+
+                    <a href="{{ url_for('explore_services') }}" class="quick-action">
+                        <span class="action-icon">🔎</span>
+                        <span>Discover Services</span>
+                    </a>
+
+                    <a href="{{ url_for('my_requests') }}" class="quick-action">
+                        <span class="action-icon">📩</span>
+                        <span>My Enquiries</span>
+                    </a>
+
+                    <a href="{{ url_for('add_service') }}" class="quick-action">
+                        <span class="action-icon">✨</span>
+                        <span>Publish a Service</span>
+                    </a>
+
+                    <a href="{{ url_for('dashboard') }}" class="quick-action">
+                        <span class="action-icon">🔄</span>
+                        <span>Refresh Dashboard</span>
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="promo">
+                <h3>Your skills can open new doors.</h3>
+
+                <p>
+                    Share what you know, help fellow students, and turn
+                    your skills into opportunities.
+                </p>
+
+                <a href="{{ url_for('add_service') }}" class="btn">
+                    Offer a Service →
+                </a>
+            </div>
+
+            <!-- RECENT ENQUIRIES -->
+            <div class="panel" style="margin-top:22px;">
+                <div class="section-heading">
+                    <div>
+                        <h2>Recent Enquiries</h2>
+                        <p>Your latest service requests.</p>
+                    </div>
+                </div>
+
+                {% for item in recent_requests %}
+                    <div style="padding:13px 0;border-bottom:1px solid #edf0f6;">
+                        <strong style="font-size:14px;">
+                            {{ item.service_title or 'Service enquiry' }}
+                        </strong>
+
+                        <p style="font-size:12px;color:#77839a;margin-top:5px;">
+                            Provider: {{ item.provider_name or 'Campus member' }}
+                        </p>
+
+                        <span class="category-badge" style="margin-top:9px;margin-bottom:0;">
+                            {{ item.status or 'Pending' }}
+                        </span>
+                    </div>
+                {% else %}
+                    <p style="font-size:13px;color:#77839a;line-height:1.7;">
+                        You have not sent any enquiries yet.
+                    </p>
+                {% endfor %}
+
+                <a href="{{ url_for('my_requests') }}"
+                   class="view-link"
+                   style="display:inline-block;margin-top:15px;">
+                    View all enquiries →
+                </a>
+            </div>
+
+        </aside>
+
+    </section>
+
+</main>
+
+<footer>
+    CampusGig Community 💙 · Built for students, by students.
+</footer>
+
+<!-- LIVE DOUGHNUT CHART -->
+<script>
+    const categoryLabels = {{ category_labels | default([]) | tojson }};
+    const categoryValues = {{ category_values | default([]) | tojson }};
+
+    const chartColors = [
+        "#2563eb",
+        "#8b5cf6",
+        "#14b8a6",
+        "#f59e0b",
+        "#ec4899",
+        "#64748b",
+        "#06b6d4",
+        "#f97316",
+        "#84cc16",
+        "#e11d48"
+    ];
+
+    const legend = document.getElementById("categoryLegend");
+
+    if (categoryLabels.length === 0) {
+        legend.innerHTML =
+            '<p style="color:#77839a;font-size:13px;">' +
+            'No service categories yet. Add a service to populate this chart.' +
+            '</p>';
+    } else {
+        legend.innerHTML = "";
+
+        categoryLabels.forEach(function(category, index) {
+            const row = document.createElement("div");
+            row.className = "legend-row";
+
+            const name = document.createElement("span");
+            name.className = "legend-name";
+
+            const dot = document.createElement("span");
+            dot.className = "legend-dot";
+            dot.style.backgroundColor =
+                chartColors[index % chartColors.length];
+
+            const label = document.createElement("span");
+            label.textContent = category;
+
+            const count = document.createElement("strong");
+            count.textContent = categoryValues[index] + " services";
+
+            name.appendChild(dot);
+            name.appendChild(label);
+            row.appendChild(name);
+            row.appendChild(count);
+
+            legend.appendChild(row);
+        });
+
+        new Chart(document.getElementById("serviceChart"), {
+            type: "doughnut",
+
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryValues,
+                    backgroundColor: categoryLabels.map(
+                        (_, index) => chartColors[index % chartColors.length]
+                    ),
+                    borderColor: "#ffffff",
+                    borderWidth: 4,
+                    hoverOffset: 9
+                }]
+            },
+
+            options: {
+                responsive: true,
+                cutout: "65%",
+
+                plugins: {
+                    legend: { display: false },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ": " +
+                                    context.raw + " services";
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

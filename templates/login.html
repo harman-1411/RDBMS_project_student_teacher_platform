@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | CampusGig</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eeedff, #f7f8ff, #e7f3ff);
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 8%;
+            background: white;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            color: #5546e8;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #172033;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #5546e8;
+            font-weight: bold;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: white;
+            padding: 38px;
+            border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(40, 35, 100, 0.12);
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            display: grid;
+            place-items: center;
+            background: #eeedff;
+            border-radius: 16px;
+            font-size: 28px;
+            margin-bottom: 22px;
+        }
+
+        h1 {
+            font-size: 30px;
+            color: #172033;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #737d90;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333c50;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dfe2ec;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #5546e8;
+            box-shadow: 0 0 0 3px #eeedff;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 9px;
+            background: #5546e8;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4032c8;
+        }
+
+        .bottom-text {
+            margin-top: 24px;
+            text-align: center;
+            color: #737d90;
+            font-size: 14px;
+        }
+
+        .bottom-text a {
+            color: #5546e8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #b42318;
+            background: #fff0ee;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #737d90;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <a class="logo" href="{{ url_for('index') }}">Campus<span>Gig</span></a>
+    <a class="nav-link" href="{{ url_for('index') }}">← Back to Home</a>
+</nav>
+
+<main class="container">
+    <div class="login-card">
+
+        <div class="icon">👋</div>
+
+        <h1>Welcome Back!</h1>
+        <p class="subtitle">
+            Login to your CampusGig account and connect with the MUJ student community.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="error">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('login') }}" method="POST">
+
+            <label for="email">Email Address</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your registered email"
+                autocomplete="email"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">Login to CampusGig →</button>
+
+        </form>
+
+        <p class="bottom-text">
+            Don't have an account?
+            <a href="{{ url_for('signup') }}">Create Account</a>
+        </p>
+
+    </div>
+</main>
+
+<footer>
+    © 2026 CampusGig · Manipal University Jaipur (MUJ)
+</footer>
+
+</body>
+</html>
